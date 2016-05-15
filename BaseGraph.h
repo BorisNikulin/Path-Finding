@@ -6,7 +6,7 @@ namespace graph
 {
 
 template<typename K, typename V>
-class BaseGraph
+class BaseGraph<K, V>
 {
 	private:
 
