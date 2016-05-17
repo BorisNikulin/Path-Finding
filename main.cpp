@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+#include "AMDGraph.h"
 
 //PRECONDITION:  Empty cin
 void pause();
@@ -27,12 +27,15 @@ int main()
 {
 	system("TITLE Path Finding");
 
+	pf::graph::AMDGraph<std::string, int> graph;
+	graph.addEdge(std::string("s"), std::string("d"), nullptr);
+
 	pause();
 	return 0;
 }
 
 void pause()
 {
-	cout << "\nPress <Enter> to end the program";
-	cin.ignore(1024, '\n');
+	std::cout << "\nPress <Enter> to end the program";
+	std::cin.ignore(1024, '\n');
 }
