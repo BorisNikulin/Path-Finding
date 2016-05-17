@@ -43,6 +43,22 @@ bool AMDGraph<K, V>::addEdge(const K& v1, const K& v2, const V* weight)
 	return false;
 }
 
+/*
+template<typename K>
+bool AMDGraph<K, bool>::addEdge(const K& v1, const K& v2, const bool* weight)
+{
+	std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
+	std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
+
+	if(v1It != vl.end() && v2It != vl.end())
+	{
+		*((am.begin() + v1It)->begin() + v2It) = weight;
+		return true;
+	}
+	return false;
+}
+*/
+
 template<typename K, typename V>
 bool AMDGraph<K, V>::removeVertex(const K& v)
 {
