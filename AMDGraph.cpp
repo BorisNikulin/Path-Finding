@@ -8,7 +8,7 @@ namespace graph
 template<typename K, typename V>
 AMDGraph<K, V>::AMDGraph()
 {
-	
+
 }
 
 template<typename K, typename V>
@@ -32,8 +32,8 @@ AMDGraph<K, V>& AMDGraph<K, V>::addVertex(const K& v)
 template<typename K, typename V>
 bool AMDGraph<K, V>::addEdge(const K& v1, const K& v2, const V* weight)
 {
-	std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
-	std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
+	typename std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
+	typename std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
 
 	if(v1It != vl.end() && v2It != vl.end())
 	{
@@ -43,26 +43,11 @@ bool AMDGraph<K, V>::addEdge(const K& v1, const K& v2, const V* weight)
 	return false;
 }
 
-/*
-template<typename K>
-bool AMDGraph<K, bool>::addEdge(const K& v1, const K& v2, const bool* weight)
-{
-	std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
-	std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
-
-	if(v1It != vl.end() && v2It != vl.end())
-	{
-		*((am.begin() + v1It)->begin() + v2It) = weight;
-		return true;
-	}
-	return false;
-}
-*/
 
 template<typename K, typename V>
 bool AMDGraph<K, V>::removeVertex(const K& v)
 {
-	std::vector<K>::iterator it = std::find(vl.begin(), vl.end(), v);
+	typename std::vector<K>::iterator it = std::find(vl.begin(), vl.end(), v);
 
 	if(it != vl.end())
 	{
@@ -83,8 +68,8 @@ bool AMDGraph<K, V>::removeVertex(const K& v)
 template<typename K, typename V>
 bool AMDGraph<K, V>::removeEdge(const K& v1, const K& v2)
 {
-	std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
-	std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
+	typename std::vector<K>::iterator v1It = std::find(vl.begin(), vl.end(), v1);
+	typename std::vector<K>::iterator v2It = std::find(vl.begin(), vl.end(), v2);
 
 	if(v1It != vl.end() && v2It != vl.end())
 	{
@@ -95,10 +80,28 @@ bool AMDGraph<K, V>::removeEdge(const K& v1, const K& v2)
 }
 
 template<typename K, typename V>
+std::list<Neighbor<K, V>>& AMDGraph<K, V>::getNeigbors(const K& v) const
+{
+	typename std::list<Neighbor<K, V>> nbrs;
+	typename std::vector<K>::iterator it = std::find(vl.begin(), vl.end(), v);
+
+	for(int i = 0; i < vl.size(); ++i)
+	{
+		V*& edge = (am + it)[i];
+		if(edge != nullptr)
+		{
+			Neighbor<K, V> n{vl[i], edge};
+			nbrs.push_back(n);
+		}
+	}
+	return nbrs;
+}
+
+template<typename K, typename V>
 AMDGraph<K, V>::~AMDGraph()
 {
 	~vl();
-	for_each(am.begin(), am.end(), [](std::vector<V>& v){~v();});
+	for_each(am.begin(), am.end(), [&](std::vector<V>& v){~v();});
 	~am();
 }
 
@@ -107,6 +110,7 @@ std::ostream& operator<<(std::ostream& out, AMDGraph<K, V> graph)
 {
 	//todo do the needfull
 	//todo make friend of AMDGraph?
+	return out;
 }
 
 }
